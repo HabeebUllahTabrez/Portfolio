@@ -119,13 +119,13 @@
 
 @keyframes textanim {
 	25% {
-		content: "A Web Developer...";
+		content: "A Web Developer.";
 	}
 	50% {
-		content: "A Designer...";
+		content: "A Designer.";
 	}
 	75% {
-		content: "A Tech Enthusiast...";
+		content: "A Tech Enthusiast.";
 	}
 }
 
