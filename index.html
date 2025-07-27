@@ -137,6 +137,7 @@
             display: flex;
             list-style: none;
             align-items: center;
+            counter-reset: item; /* Fix: Reset the counter */
         }
 
         .main-nav li {
@@ -192,22 +193,25 @@
 
         #hero .name {
             color: var(--lightest-slate);
+            margin-bottom: 10px; /* Fix: Reduced margin */
         }
 
         #hero .subtitle {
             color: var(--slate);
             margin-top: -10px;
+            font-size: clamp(24px, 4vw, 36px);
         }
 
         #hero p.intro {
             font-family: var(--font-mono);
             color: var(--accent-primary);
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Fix: Reduced margin */
+            font-size: 1.3rem; /* Fix: Increased font size */
         }
 
         #hero .summary {
             max-width: 600px;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 1.1rem;
         }
 
