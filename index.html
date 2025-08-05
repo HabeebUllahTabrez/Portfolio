@@ -132,12 +132,10 @@
             transition: top 0.3s;
         }
 
-        .logo {
-            font-family: var(--font-mono);
-            font-size: 1.5rem;
-            color: var(--accent-primary);
-            border: 2px solid var(--accent-primary);
-            padding: 5px 10px;
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 30%;
         }
 
         .main-nav ol {
@@ -571,7 +569,9 @@
 <body>
 
     <header class="main-header" id="mainHeader">
-        <a href="#" class="logo">HT</a>
+        <a href="#" class="logo">
+            <img src="./images/logo.webp" alt="Mohammed Habeeb Ullah Tabrez">
+        </a>
         <nav class="main-nav" id="mainNav">
             <ol>
                 <li><a href="#about">About</a></li>
