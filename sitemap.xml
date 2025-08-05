@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://theopcoder.in/</loc>
-    <lastmod>2025-07-28</lastmod> <!-- Optional: Change to the date you last updated the site -->
-    <priority>1.0</priority>
+    <lastmod>2025-08-05</lastmod> <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://theopcoder.in/images/Mohammed_Habeeb_Ullah_Tabrez.webp</image:loc>
+      <image:caption>A professional headshot of Mohammed Habeeb Ullah Tabrez, a backend developer from Hyderabad.</image:caption>
+      <image:geo_location>Hyderabad, India</image:geo_location>
+      <image:title>Mohammed Habeeb Ullah Tabrez - Backend Developer</image:title>
+    </image:image>
   </url>
 </urlset>
