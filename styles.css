@@ -680,7 +680,7 @@ footer {
 
     #hero {
         min-height: auto;
-        padding-top: 80px;
+        padding-top: 120px;
     }
 
     #hero h1 {
@@ -757,6 +757,11 @@ footer {
     .skill-category li {
         font-size: 0.85rem;
         padding: 4px 8px;
+    }
+
+    #contact {
+        min-height: 65vh;
+        /* margin: 0 auto; */
     }
 
     #contact h2 {
