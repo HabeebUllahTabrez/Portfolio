@@ -21,6 +21,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
 }
 
 body {
@@ -28,6 +29,7 @@ body {
     background-color: var(--primary-color);
     color: var(--slate);
     line-height: 1.6;
+    padding: 0 50px;
 }
 
 a {
@@ -80,14 +82,17 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 50px;
     position: fixed;
     width: 100%;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 10;
     background-color: rgba(2, 17, 35, 0.85);
     backdrop-filter: blur(10px);
     transition: top 0.3s;
+    box-sizing: border-box;
 }
 
 .logo img {
@@ -176,12 +181,73 @@ section {
     max-width: 600px;
     margin-top: 25px;
     font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    text-decoration: none;
+}
+
+.cta-button.primary {
+    background-color: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.cta-button.primary:hover {
+    background-color: rgba(255, 183, 3, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -10px var(--accent-primary);
+}
+
+.cta-button.secondary {
+    background-color: transparent;
+    border: 1px solid var(--slate);
+    color: var(--slate);
+}
+
+.cta-button.secondary:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateY(-3px);
 }
 
 .hero-image-container {
     max-width: 300px;
     max-height: 300px;
     justify-self: center;
+    position: relative;
+}
+
+.hero-image-container::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--accent-primary);
+    border-radius: 5px;
+    z-index: -1;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.hero-image-container:hover::before {
+    top: 15px;
+    left: 15px;
 }
 
 .hero-image-container img {
@@ -434,11 +500,54 @@ footer {
         margin-left: auto;
         margin-right: auto;
     }
+
+    .hero-cta {
+        justify-content: center;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    #skills .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 0 20px;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    section {
+        padding: 80px 0;
+    }
+
+    .section-heading {
+        font-size: 1.5rem;
+    }
+
     .section-heading::after {
         width: 100px;
+    }
+
+    .main-header {
+        padding: 1.2rem 20px;
+    }
+
+    .logo img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .hamburger .bar {
+        width: 28px;
+        height: 3px;
+        margin: 6px auto;
     }
 
     .main-nav {
@@ -483,5 +592,234 @@ footer {
     }
     .hamburger.active .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
+    }
+
+    #hero h1 {
+        font-size: clamp(32px, 5vw, 50px);
+    }
+
+    #hero .subtitle {
+        font-size: clamp(20px, 3.5vw, 30px);
+    }
+
+    #hero p.intro {
+        font-size: 1.1rem;
+    }
+
+    #hero .summary {
+        font-size: 1rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .cta-button {
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #skills .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #contact h2 {
+        font-size: 2rem;
+    }
+
+    .contact-image {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0 15px;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    section {
+        padding: 60px 0;
+    }
+
+    .main-header {
+        padding: 1rem 15px;
+    }
+
+    .logo img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .hamburger .bar {
+        width: 30px;
+        height: 3.5px;
+        margin: 6px auto;
+    }
+
+    .section-heading {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+    }
+
+    .section-heading::after {
+        width: 50px;
+        margin-left: 10px;
+    }
+
+    #hero {
+        min-height: auto;
+        padding-top: 80px;
+    }
+
+    #hero h1 {
+        font-size: clamp(28px, 7vw, 40px);
+    }
+
+    #hero .subtitle {
+        font-size: clamp(18px, 5vw, 26px);
+    }
+
+    #hero p.intro {
+        font-size: 1rem;
+    }
+
+    #hero .summary {
+        font-size: 0.95rem;
+        margin-top: 20px;
+    }
+
+    .hero-image-container {
+        max-width: 200px;
+        max-height: 200px;
+        margin-bottom: 30px;
+    }
+
+    .hero-image-container::before {
+        top: 15px;
+        left: 15px;
+    }
+
+    .cta-button {
+        padding: 0.85rem 1.75rem;
+        font-size: 0.9rem;
+    }
+
+    .job {
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+
+    .job-title {
+        font-size: 1.1rem;
+    }
+
+    .job-description li {
+        font-size: 0.95rem;
+        padding-left: 25px;
+    }
+
+    .project-card {
+        padding: 1.5rem;
+    }
+
+    .project-title {
+        font-size: 1.2rem;
+    }
+
+    .project-description {
+        font-size: 0.95rem;
+    }
+
+    .project-tech-list {
+        font-size: 0.75rem;
+    }
+
+    .skill-category {
+        padding: 15px;
+    }
+
+    .skill-category h3 {
+        font-size: 1rem;
+    }
+
+    .skill-category li {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    #contact h2 {
+        font-size: 1.7rem;
+    }
+
+    #contact p {
+        font-size: 0.95rem;
+    }
+
+    .contact-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .contact-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    footer {
+        padding: 15px;
+        font-size: 0.75rem;
+    }
+
+    #footer-social-links {
+        gap: 20px;
+    }
+
+    #footer-social-links svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 360px) {
+    .main-nav {
+        width: 85vw;
+    }
+
+    .section-heading::after {
+        display: none;
+    }
+
+    #hero h1 {
+        font-size: 24px;
+    }
+
+    #hero .subtitle {
+        font-size: 16px;
+    }
+
+    .hero-image-container {
+        max-width: 180px;
+        max-height: 180px;
+    }
+
+    .project-card {
+        padding: 1.25rem;
+    }
+
+    .contact-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
     }
 }
