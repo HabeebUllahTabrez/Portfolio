@@ -265,8 +265,27 @@ section {
     gap: 50px;
 }
 
+#about .about-text {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+#about .about-text:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px -10px rgba(255, 183, 3, 0.3);
+}
+
 #about p {
     margin-bottom: 15px;
+    line-height: 1.7;
+    transition: color 0.25s ease;
+}
+
+#about p:hover {
+    color: var(--light-slate);
 }
 
 /* --- Experience Section --- */
@@ -275,16 +294,25 @@ section {
     padding: 20px;
     background-color: var(--secondary-color);
     border-radius: 5px;
-    transition: transform 0.3s ease;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .job:hover {
     transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px -10px rgba(255, 183, 3, 0.3);
 }
 
 .job-title {
     font-size: 1.2rem;
     font-weight: 600;
+    color: var(--lightest-slate);
+    transition: color 0.3s ease;
+}
+
+.job:hover .job-title {
+    color: var(--accent-primary);
 }
 
 .job-title span {
@@ -306,6 +334,7 @@ section {
     position: relative;
     padding-left: 30px;
     margin-bottom: 10px;
+    transition: color 0.25s ease;
 }
 
 .job-description li::before {
@@ -313,6 +342,11 @@ section {
     position: absolute;
     left: 0;
     color: var(--accent-primary);
+    transition: transform 0.25s ease;
+}
+
+.job-description li:hover::before {
+    transform: translateX(5px);
 }
 
 /* --- Projects Section --- */
@@ -329,11 +363,15 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    border: 1px solid transparent;
+    position: relative;
 }
 
 .project-card:hover {
     transform: translateY(-7px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px -10px rgba(255, 183, 3, 0.3);
 }
 
 .project-header {
@@ -346,15 +384,28 @@ section {
 .project-title {
     font-size: 1.4rem;
     margin-bottom: 10px;
+    color: var(--lightest-slate);
+    transition: color 0.3s ease;
+}
+
+.project-card:hover .project-title {
+    color: var(--accent-primary);
+}
+
+.project-links {
+    display: flex;
+    gap: 5px;
 }
 
 .project-links a {
     color: var(--slate);
-    margin-left: 15px;
+    margin-left: 10px;
+    transition: all 0.25s ease;
 }
 
 .project-links a:hover {
     color: var(--accent-primary);
+    transform: translateY(-2px);
 }
 
 .project-links svg {
@@ -365,6 +416,7 @@ section {
 .project-description {
     font-size: 1rem;
     flex-grow: 1;
+    line-height: 1.6;
 }
 
 .project-tech-list {
@@ -380,6 +432,12 @@ section {
 .project-tech-list li {
     margin-right: 15px;
     margin-bottom: 5px;
+    color: var(--accent-primary);
+    transition: color 0.25s ease;
+}
+
+.project-tech-list li:hover {
+    color: var(--lightest-slate);
 }
 
 /* --- Skills Section --- */
@@ -393,6 +451,14 @@ section {
     background-color: var(--secondary-color);
     padding: 20px;
     border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px -10px rgba(255, 183, 3, 0.3);
 }
 
 .skill-category h3 {
@@ -416,6 +482,13 @@ section {
     border-radius: 3px;
     font-family: var(--font-mono);
     font-size: 0.9rem;
+    transition: all 0.25s ease;
+}
+
+.skill-category li:hover {
+    background-color: rgba(255, 183, 3, 0.1);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
 }
 
 /* --- Contact Section --- */
