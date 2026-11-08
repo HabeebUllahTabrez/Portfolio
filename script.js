@@ -107,14 +107,10 @@
     },
   };
 
-  /* Hide a section (and its nav link) when it ends up with nothing to show */
+  /* Hide a section when it ends up with nothing to show */
   function hideSection(node) {
     const section = node.closest("section");
-    if (!section) return;
-    section.hidden = true;
-    if (section.id) {
-      document.querySelectorAll(`.site-nav a[href="#${section.id}"]`).forEach((a) => (a.hidden = true));
-    }
+    if (section) section.hidden = true;
   }
 
   document.querySelectorAll("[data-render]").forEach((node) => {
@@ -143,25 +139,6 @@
     });
   }
   syncTheme();
-
-  /* ---------- Mobile menu ---------- */
-  const menuBtn = document.querySelector(".menu-toggle");
-  const nav = document.getElementById("site-nav");
-  if (menuBtn && nav) {
-    const setOpen = (open) => {
-      nav.classList.toggle("is-open", open);
-      menuBtn.setAttribute("aria-expanded", String(open));
-      menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    };
-    menuBtn.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
-    nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
-    /* Close on a tap outside the header, and if the screen grows past the mobile layout */
-    document.addEventListener("click", (e) => {
-      if (nav.classList.contains("is-open") && !e.target.closest(".site-header")) setOpen(false);
-    });
-    matchMedia("(min-width: 761px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
-  }
 
   /* ---------- Header border once scrolled ---------- */
   const header = document.querySelector(".site-header");
