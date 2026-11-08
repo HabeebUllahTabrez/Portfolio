@@ -18,6 +18,8 @@
     const badge = document.createElement("p");
     badge.className = "draft-badge";
     badge.textContent = "Draft view · placeholders in amber are hidden on the live site";
+    badge.title = "Tap to dismiss";
+    badge.addEventListener("click", () => { badge.remove(); root.classList.add("no-badge"); });
     document.body.appendChild(badge);
   }
   const keep = (item) => DRAFT || !(item && item.todo);
@@ -54,6 +56,7 @@
       (SITE.gallery || []).filter(keep).forEach((item, i) => {
         const fig = el("figure", { class: todoClass(item, "gallery__item") });
         const img = el("img", { src: item.src, alt: item.alt || "", loading: "lazy", decoding: "async" });
+        if (item.position) img.style.objectPosition = item.position;
         const cap = el("figcaption", null, el("span", { class: "mono", text: `fig. ${i + 2}` }), " ", item.caption);
         img.addEventListener("error", () => {
           if (DRAFT) {
@@ -69,13 +72,24 @@
       });
     },
 
-    likes: (node) => {
-      (SITE.likes || []).forEach((group) => {
+    about: (node) => {
+      (SITE.about || []).forEach((group) => {
         const items = (group.items || []).map(asItem).filter(keep);
         if (!items.length) return;
-        node.append(el("div", { class: "likes__group" },
-          el("h3", { text: group.title }),
-          el("ul", null, items.map((it) => el("li", { class: todoClass(it), text: it.text })))));
+        node.append(el("div", { class: "about__row" },
+          el("dt", { text: group.label }),
+          el("dd", null, el("ul", { class: "terms" },
+            items.map((it) => {
+              const li = el("li", { class: todoClass(it, it.done && "is-done") });
+              /* Done items stay on the list, struck through, with the year they happened */
+              if (it.done) {
+                li.append(el("s", { html: it.text }), el("span", { class: "visually-hidden", text: " (done)" }));
+                if (it.done !== true) li.append(el("span", { class: "terms__year", text: ` ${it.done}` }));
+              } else {
+                li.innerHTML = it.text;
+              }
+              return li;
+            })))));
       });
     },
 
@@ -142,6 +156,11 @@
     menuBtn.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
     nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+    /* Close on a tap outside the header, and if the screen grows past the mobile layout */
+    document.addEventListener("click", (e) => {
+      if (nav.classList.contains("is-open") && !e.target.closest(".site-header")) setOpen(false);
+    });
+    matchMedia("(min-width: 761px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
   }
 
   /* ---------- Header border once scrolled ---------- */
@@ -158,7 +177,8 @@
       entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
       });
-    }, { threshold: 0.08 });
+    /* threshold 0 + a small inset, so tall sections on short phone screens still reveal */
+    }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
     document.querySelectorAll(".section, .contact").forEach((s) => { s.classList.add("reveal"); io.observe(s); });
   }
 

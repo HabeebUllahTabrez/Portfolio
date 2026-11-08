@@ -187,10 +187,24 @@ main { counter-reset: section; }
 }
 #gallery .text-link { margin-top: 48px; }
 
-/* ---------- Likes ---------- */
-.likes { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 28px 24px; }
-.likes h3 { font-family: var(--mono); font-weight: 500; font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); padding-bottom: 8px; margin-bottom: 6px; border-bottom: 1px solid var(--line); }
-.likes li { font-family: var(--serif); font-size: 1.35rem; line-height: 1.3; padding: 3px 0; }
+/* ---------- More about me: label + a flowing line of terms per row ---------- */
+.about__row {
+  display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 6px 24px; align-items: baseline;
+  padding: 18px 0 20px; border-top: 1px solid var(--line);
+}
+.about__row:first-child { border-top: 1.5px solid var(--ink); }
+.about dt { font-size: .74rem; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+.terms {
+  max-width: 36ch;
+  font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.05rem); line-height: 1.3; letter-spacing: -0.005em;
+}
+/* inline-block keeps each term whole; lines break between terms, not inside them */
+.terms li { display: inline-block; text-wrap: balance; }
+/* The dot sticks to the term before it, so a line never starts with one */
+.terms li:not(:last-child)::after { content: "\00a0·"; margin-right: .3em; color: var(--accent); }
+.terms .is-done { color: var(--muted); }
+.terms s { text-decoration-thickness: 1.5px; text-decoration-color: var(--accent); }
+.terms__year { font-family: var(--sans); font-size: .45em; letter-spacing: .04em; color: var(--accent); vertical-align: .55em; }
 
 /* ---------- Contact ---------- */
 .contact { padding: clamp(64px, 9vw, 112px) 0; border-top: 1px solid var(--line); text-align: center; }
@@ -247,7 +261,7 @@ main { counter-reset: section; }
 .job:last-child { border-bottom: 1px solid var(--line); }
 .job__when { color: var(--muted); padding-top: .45em; }
 .job__title { font-family: var(--serif); font-weight: 400; font-size: 1.75rem; line-height: 1.15; }
-.job__title span { color: var(--accent); font-style: italic; }
+.job__title span { color: var(--accent); font-style: italic; white-space: nowrap; }
 .job__points { margin-top: 12px; display: grid; gap: 8px; }
 .job__points li { position: relative; padding-left: 20px; color: var(--muted); }
 .job__points li::before { content: "–"; position: absolute; left: 0; color: var(--accent); }
@@ -270,10 +284,20 @@ main { counter-reset: section; }
 .project__links { display: flex; gap: 18px; font-size: .9rem; font-weight: 500; }
 .project__links:empty { display: none; }
 
-.skills > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; padding: 14px 0; border-top: 1px solid var(--line); }
-.skills > div:last-child { border-bottom: 1px solid var(--line); }
-.skills dt { font-family: var(--mono); font-size: .8rem; color: var(--muted); padding-top: .2em; }
-.skills dd { font-size: 1.05rem; }
+.approach { counter-reset: step; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+.approach li { counter-increment: step; padding: 18px 0 24px; border-top: 1px solid var(--line); }
+.approach li::before {
+  content: counter(step, decimal-leading-zero);
+  display: block; margin-bottom: 10px;
+  font-size: .75rem; font-variant-numeric: tabular-nums; color: var(--accent);
+}
+.approach h3 { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; line-height: 1.1; }
+.approach p { margin-top: 8px; color: var(--muted); }
+.stack { margin-top: 12px; padding-top: 16px; border-top: 1.5px solid var(--ink); }
+.stack span {
+  display: block; margin-bottom: 4px;
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+}
 
 /* ==========================================================================
    Draft placeholders: hidden unless previewing (see script.js)
@@ -286,7 +310,7 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   position: fixed; left: 12px; bottom: 12px; z-index: 40; max-width: calc(100% - 24px);
   padding: 6px 12px; border-radius: 999px;
   background: var(--todo-soft); color: var(--todo); border: 1px solid var(--todo);
-  font-family: var(--mono); font-size: .7rem;
+  font-family: var(--mono); font-size: .7rem; cursor: pointer;
 }
 
 /* ---------- Reveal ---------- */
@@ -324,19 +348,166 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .site-nav a:last-child { border-bottom: 0; }
   html:not(.js) .site-nav { display: flex; position: static; flex-direction: row; flex-wrap: wrap; gap: 4px 14px; padding: 0; border: 0; background: none; }
   html:not(.js) .site-nav a { padding: 0; border: 0; font-size: .9rem; }
+  /* A short nav (home page) stays inline on phones; no hamburger needed */
+  .site-nav--inline, html:not(.js) .site-nav--inline {
+    display: flex; position: static; flex-direction: row; gap: 20px;
+    margin-left: auto; padding: 0; border: 0; background: none;
+  }
+  .site-nav--inline a, html:not(.js) .site-nav--inline a { padding: 10px 0; border: 0; font-size: .95rem; color: var(--muted); }
+  .site-nav--inline + .header-actions { margin-left: 4px; }
 
-  .entry__top { grid-template-columns: 1fr 34%; align-items: start; gap: 16px; }
-  .entry__name-mid { padding-left: .3em; }
-  .entry__senses { grid-template-columns: 1fr; gap: 20px; }
+  /* Hero: the name fills the screen edge to edge ("Habeeb" ≈ 2.4em wide,
+     "Ullah" + its indent ≈ the same), the portrait sits underneath as a wide crop */
+  .entry { padding-top: 20px; }
+  .entry__top { grid-template-columns: 1fr; gap: 20px; }
+  .entry__name { font-size: calc((100vw - 2 * var(--gutter)) / 2.42); line-height: .84; letter-spacing: -0.03em; }
+  .entry__name-mid { padding-left: .55em; }
+  .entry__portrait img { aspect-ratio: 4 / 3; object-position: 50% 22%; }
+  .entry__meta { margin-top: 28px; }
+  .entry__senses { grid-template-columns: 1fr; gap: 18px; margin-top: 28px; }
   .entry__senses li { font-size: 1.05rem; padding-left: 1.9rem; }
 
-  .now__item, .job, .skills > div { grid-template-columns: 1fr; }
+  /* Sections: tighter rhythm, a bit more presence on the titles */
+  .section { padding: 48px 0; gap: 0; }
+  .section__head { margin-bottom: 22px; }
+  .section__title { font-size: 2.35rem; }
 
-  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; }
-  .gallery__item:nth-child(3n + 2) { transform: none; }
-  .gallery__item:nth-child(even) { transform: translateY(20px); }
+  /* Label/value lists keep their two columns, like a glossary */
+  .now__item { grid-template-columns: 5.75rem 1fr; gap: 4px 16px; }
+  .now__item dt { font-size: .74rem; padding-top: .35em; }
+  .now__item dd { font-size: 1.02rem; line-height: 1.5; }
+
+  /* How I work: number in the margin, like the project list */
+  .approach { grid-template-columns: 1fr; }
+  .approach li { position: relative; padding: 18px 0 20px 2.4rem; }
+  .approach li::before { position: absolute; left: 0; top: 25px; margin: 0; }
+  .approach h3 { font-size: 1.45rem; }
+  .approach p { font-size: .95rem; }
+  .stack { margin-top: 4px; }
+  .job { grid-template-columns: 1fr; gap: 4px; padding: 22px 0; }
+  .job__when { padding-top: 0; font-size: .78rem; }
+
+  /* Gallery: a swipeable strip that bleeds to the screen edges */
+  .gallery {
+    display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter);
+    margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) 6px;
+    scrollbar-width: none;
+  }
+  .gallery::-webkit-scrollbar { display: none; }
+  .gallery__item { flex: 0 0 min(72%, 300px); scroll-snap-align: start; }
+  .gallery__item:nth-child(n) { transform: none; }
+  #gallery .text-link { margin-top: 12px; }
+
+  .about__row { grid-template-columns: 1fr; padding: 14px 0 18px; }
+  .terms { font-size: 1.5rem; line-height: 1.3; }
+
+  /* Contact */
+  .contact { padding: 72px 0 64px; }
+  .contact__title { font-size: 4.5rem; }
+  .contact--compact .contact__title { font-size: 4rem; }
+  .contact__email { font-size: 1.3rem; }
+
+  /* Experience as a timeline: a rule down the left joining one dot per job */
+  .job { position: relative; padding: 0 0 30px 26px; border: 0; }
+  .job:last-child { border: 0; padding-bottom: 0; }
+  .job::before { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .job:first-child::before { top: 8px; }
+  .job:last-child::before { bottom: auto; height: 8px; }
+  .job::after {
+    content: ""; position: absolute; left: 0; top: 4px; width: 9px; height: 9px; border-radius: 50%;
+    border: 1.5px solid var(--accent); background: var(--bg);
+  }
+  .job:first-child::after { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+  .job__when { color: var(--accent); letter-spacing: .02em; }
+  .job__title { margin-top: 2px; }
+
+  /* Projects: featured stays a card, the rest become a compact numbered list */
+  .projects { gap: 0; counter-reset: project; }
+  .project--featured { margin-bottom: 12px; }
+  .project:not(.project--featured) {
+    counter-increment: project; position: relative;
+    padding: 20px 0 20px 2.4rem; gap: 6px;
+    background: none; border: 0; border-radius: 0; border-top: 1px solid var(--line);
+  }
+  .project:not(.project--featured)::before {
+    content: counter(project, decimal-leading-zero);
+    position: absolute; left: 0; top: 25px;
+    font-size: .75rem; font-variant-numeric: tabular-nums; color: var(--accent);
+  }
+  .project:not(.project--featured):last-child { border-bottom: 1px solid var(--line); }
+  .project:not(.project--featured) .project__title { font-size: 1.45rem; padding-right: 4.5rem; }
+  .project:not(.project--featured) .project__links { position: absolute; top: 14px; right: 0; margin: 0; }
+  .project:not(.project--featured) .project__desc { font-size: .95rem; }
+  .project:not(.project--featured) .project__tech { gap: 0; padding-top: 2px; }
+  .project:not(.project--featured) .project__tech li { padding: 0; border: 0; font-size: .75rem; }
+  .project:not(.project--featured) .project__tech li + li::before { content: "·"; margin: 0 7px; color: var(--line); }
+  .is-draft .project.todo:not(.project--featured) { border-style: dashed; border-width: 1px 0 0; }
+
+  /* Work intro */
+  .work-intro { padding-top: 28px; }
+  .work-intro__kicker { margin-bottom: 16px; }
+  .work-intro__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); line-height: .98; }
+  .work-intro__lede { margin-top: 20px; }
 
   .projects { grid-template-columns: 1fr; }
+  .project { padding: 20px; }
   .project--featured .project__title { font-size: 1.9rem; }
+  .job__title { font-size: 1.55rem; }
   .site-footer { flex-direction: column; }
+
+  /* Pronunciation + part of speech on one line, the rest on the next */
+  .entry__meta { gap: 4px 14px; }
+  .entry__meta::before { content: ""; flex-basis: 100%; order: 1; }
+  .entry__meta > span:nth-child(n + 3) { order: 2; }
+
+  /* Bigger tap targets (~44px) without changing the look */
+  .socials { gap: 0 18px; margin-top: 28px; }
+  .socials a { display: inline-block; padding: 12px 2px; }
+  .text-link, .project__links a { display: inline-block; padding: 10px 0; }
+  .text-link { margin-top: 16px; }
+  .project__links { gap: 22px; margin-bottom: -10px; }
+  .site-footer a { display: inline-block; padding: 8px 0; }
+  .work-intro__kicker a { display: inline-block; padding: 6px 0; }
+
+  .contact__lede { margin: 20px auto 24px; }
+  .draft-badge { font-size: .65rem; padding: 4px 10px; }
+  .is-draft:not(.no-badge) body { padding-bottom: 48px; }
+}
+
+/* Large phones in landscape / small tablets: a full-width name would be enormous,
+   so put the portrait back beside it */
+@media (min-width: 521px) and (max-width: 760px) {
+  .entry__top { grid-template-columns: 1fr 36%; align-items: end; gap: 24px; }
+  .entry__name { font-size: calc((100vw - 2 * var(--gutter)) * .58 / 2.42); }
+  .entry__portrait img { aspect-ratio: 4 / 5; }
+}
+
+/* Small phones: facts read better as a single list */
+@media (max-width: 480px) {
+  .facts { grid-template-columns: 1fr; margin-top: 36px; }
+  .facts > div, .facts > div + div {
+    display: grid; grid-template-columns: 6.5rem 1fr; gap: 12px; align-items: baseline;
+    padding: 11px 0; border-left: 0;
+  }
+  .facts > div + div { border-top: 1px solid var(--line); }
+  .facts dd { margin-top: 0; }
+  .work-intro__lede { font-size: 1.05rem; }
+  .project--featured .project__title { font-size: 1.7rem; }
+}
+
+/* Touch screens: no sticky hover states, no grey tap flash */
+html { -webkit-tap-highlight-color: transparent; }
+@media (hover: none) {
+  a:hover { color: inherit; text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+  .site-nav a:hover { color: var(--muted); }
+  .socials a:hover { color: var(--muted); }
+  .contact__email:hover { color: var(--accent); }
+  .btn:hover { background: transparent; color: inherit; }
+  .project:hover { border-color: var(--line); }
+  .project--featured:hover { border-color: transparent; }
+  .icon-btn:hover { border-color: var(--line); }
+}
+@media (hover: none) and (max-width: 760px) {
+  .site-nav a:hover { color: var(--ink); }
 }
