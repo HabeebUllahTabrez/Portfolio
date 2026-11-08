@@ -435,18 +435,14 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .job__when { color: var(--accent); letter-spacing: .02em; }
   .job__title { margin-top: 2px; }
 
-  /* Projects: featured stays a card, the rest become a compact numbered list */
-  .projects { gap: 0; counter-reset: project; }
+  /* Projects: the featured one stays a card; the rest become a plain ruled list
+     (unnumbered: there's no order or ranking to imply) */
+  .projects { gap: 0; }
   .project--featured { margin-bottom: 12px; }
   .project:not(.project--featured) {
-    counter-increment: project; position: relative;
-    padding: 20px 0 20px 2.4rem; gap: 6px;
+    position: relative;
+    padding: 20px 0; gap: 6px;
     background: none; border: 0; border-radius: 0; border-top: 1px solid var(--line);
-  }
-  .project:not(.project--featured)::before {
-    content: counter(project, decimal-leading-zero);
-    position: absolute; left: 0; top: 25px;
-    font-size: .75rem; font-variant-numeric: tabular-nums; color: var(--accent);
   }
   .project:not(.project--featured):last-child { border-bottom: 1px solid var(--line); }
   .project:not(.project--featured) .project__title { font-size: 1.45rem; padding-right: 4.5rem; }
@@ -573,6 +569,30 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .entry__meta { font-size: .98rem; }
   .entry__meta .mono { font-size: .86rem; }
   .entry__pos { font-size: 1.45rem; }
+}
+
+/* Phones (portrait), work page: the intro fills the first screen as one
+   centred block, the same as the home page's landing */
+@media (max-width: 520px) {
+  .work-intro {
+    display: flex; flex-direction: column;
+    min-height: calc(100vh - var(--header-h));
+    min-height: calc(100svh - var(--header-h));
+    padding: 16px 0 28px;
+  }
+  /* spacers share any spare height, a little more below than above */
+  .work-intro::before, .work-intro::after { content: ""; }
+  .work-intro::before { flex: 1 1 0; }
+  .work-intro::after { flex: 1.15 1 0; }
+  .work-intro__grid { margin-top: 24px; gap: 24px; }
+
+  /* Facts keep one row each (see the 480px block); no closing rule, since
+     the next section brings its own */
+  .facts { border-bottom: 0; }
+
+  /* Experience bullets match the project and approach descriptions */
+  .job__points { gap: 10px; }
+  .job__points li { font-size: .95rem; line-height: 1.55; padding-left: 18px; text-wrap: pretty; }
 }
 
 /* Small phones: facts read better as a single list */
