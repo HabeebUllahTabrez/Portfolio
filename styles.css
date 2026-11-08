@@ -195,20 +195,24 @@ main { counter-reset: section; }
 #gallery .text-link { margin-top: 48px; }
 
 /* ---------- More about me: label + a flowing line of terms per row ---------- */
+/* Same rhythm as the "Right now" list: label column, thin rules, body-scale text */
+.about { border-top: 1px solid var(--line); }
 .about__row {
-  display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 6px 24px; align-items: baseline;
-  padding: 18px 0 20px; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 4px 24px; align-items: baseline;
+  padding: 16px 0; border-bottom: 1px solid var(--line);
 }
-.about__row:first-child { border-top: 1.5px solid var(--ink); }
-.about dt { font-size: .74rem; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+.about dt { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
 .terms {
-  max-width: 36ch;
-  font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2.05rem); line-height: 1.3; letter-spacing: -0.005em;
+  font-family: var(--serif); font-size: 1.4rem; line-height: 1.4; letter-spacing: -0.005em;
 }
 /* inline-block keeps each term whole; lines break between terms, not inside them */
 .terms li { display: inline-block; text-wrap: balance; }
-/* The dot sticks to the term before it, so a line never starts with one */
-.terms li:not(:last-child)::after { content: "\00a0·"; margin-right: .3em; color: var(--accent); }
+/* Each term carries its separator in front of it. The list is pulled left by one
+   separator's width and its box clips, so a dot that starts a line is hidden:
+   dots only ever show between two terms on the same line. */
+.about dd { overflow: hidden; }
+.terms { margin-left: -1.6em; text-wrap: balance; }
+.terms li::before { content: "·"; display: inline-block; width: 1.6em; text-align: center; color: var(--accent); }
 .terms .is-done { color: var(--muted); }
 .terms s { text-decoration-thickness: 1.5px; text-decoration-color: var(--accent); }
 .terms__year { font-family: var(--sans); font-size: .45em; letter-spacing: .04em; color: var(--accent); vertical-align: .55em; }
@@ -404,7 +408,7 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   #gallery .text-link { margin-top: 12px; }
 
   .about__row { grid-template-columns: 1fr; padding: 14px 0 18px; }
-  .terms { font-size: 1.5rem; line-height: 1.3; }
+  .terms { font-size: 1.3rem; }
 
   /* Contact */
   .contact { padding: 72px 0 64px; }
