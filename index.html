@@ -14,9 +14,13 @@
   <meta property="og:title" content="Habeeb Ullah Tabrez">
   <meta property="og:description" content="Software engineer, collector of new experiences, and calisthenics enthusiast. Based in Hyderabad.">
   <meta property="og:url" content="https://theopcoder.in/">
-  <meta property="og:image" content="https://theopcoder.in/images/Mohammed_Habeeb_Ullah_Tabrez.webp">
+  <meta property="og:image" content="https://theopcoder.in/images/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Habeeb Ullah Tabrez, software engineer who works out what to build, then builds it. theopcoder.in">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@HabeebDoesStuff">
+  <meta name="twitter:image" content="https://theopcoder.in/images/share.jpg">
 
   <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96">
   <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg">
@@ -29,6 +33,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Old links: the previous one-page site had these sections on the home page;
+       they live on the work page now, so send those links on before anything paints -->
+  <script>
+    (function () {
+      var moved = { "#experience": "#experience", "#projects": "#projects", "#skills": "#how" };
+      var to = moved[location.hash.toLowerCase()];
+      if (to) location.replace("work.html" + to);
+    })();
+  </script>
 
   <!-- Apply saved theme before paint to avoid a flash -->
   <script>
@@ -44,7 +58,7 @@
       "@type": "Person",
       "name": "Habeeb Ullah Tabrez",
       "alternateName": ["Mohammed Habeeb Ullah Tabrez", "Habeeb"],
-      "jobTitle": "Backend Developer",
+      "jobTitle": "Software Engineer",
       "worksFor": { "@type": "Organization", "name": "Wilya" },
       "alumniOf": { "@type": "CollegeOrUniversity", "name": "Muffakham Jah College of Engineering and Technology" },
       "address": { "@type": "PostalAddress", "addressLocality": "Hyderabad", "addressRegion": "Telangana", "addressCountry": "IN" },

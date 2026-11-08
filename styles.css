@@ -247,6 +247,11 @@ main { counter-reset: section; }
   transition: background .15s, color .15s;
 }
 .btn:hover { background: var(--ink); color: var(--bg); }
+button.btn { font: inherit; font-weight: 500; font-size: .95rem; background: transparent; color: var(--ink); }
+.btn:disabled, .btn:disabled:hover {
+  cursor: not-allowed; background: transparent; color: var(--muted);
+  border-color: var(--line); border-style: dashed;
+}
 
 /* ==========================================================================
    Work page
@@ -320,6 +325,37 @@ main { counter-reset: section; }
 .stack__list li:not(:last-child)::after { content: ", "; }
 .stack__list li:last-child::before { content: "and "; }
 .stack__list li:last-child::after { content: " throughout."; }
+
+/* ==========================================================================
+   404 page: a dictionary entry for the missing page
+   ========================================================================== */
+.lost {
+  min-height: calc(100vh - var(--header-h) - 120px);
+  min-height: calc(100svh - var(--header-h) - 120px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(40px, 8vh, 96px) 0;
+}
+.lost__word {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(3.4rem, 13vw, 9rem); line-height: .95; letter-spacing: -0.025em;
+  padding-bottom: clamp(16px, 3vh, 28px); border-bottom: 1.5px solid var(--ink);
+}
+.lost__word span { color: var(--accent); }
+.lost__meta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px;
+  padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--muted);
+}
+.lost__meta .mono { color: var(--ink); font-size: .9rem; }
+.lost__pos { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink); }
+.lost__senses { counter-reset: sense; display: grid; gap: 10px; margin-top: 20px; max-width: 56ch; }
+.lost__senses li { counter-increment: sense; position: relative; padding-left: 2rem; font-size: 1.075rem; line-height: 1.5; }
+.lost__senses li::before {
+  content: counter(sense) ".";
+  position: absolute; left: 0; top: .1em;
+  font-family: var(--serif); font-size: 1.45rem; line-height: 1; color: var(--accent);
+}
+.lost__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 36px; }
+.lost__actions .text-link { margin-top: 0; }
 
 /* ==========================================================================
    Draft placeholders: hidden unless previewing (see script.js)
