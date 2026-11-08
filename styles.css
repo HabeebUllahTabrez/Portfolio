@@ -239,21 +239,25 @@ main { counter-reset: section; }
    Work page
    ========================================================================== */
 .work-intro { padding: clamp(36px, 6vw, 88px) 0 clamp(40px, 6vw, 64px); }
-.work-intro__kicker { color: var(--muted); margin-bottom: 24px; }
-.work-intro__kicker a { color: var(--ink); }
 .work-intro__title {
   font-family: var(--serif); font-weight: 400; max-width: 16ch;
   font-size: clamp(2.9rem, 8vw, 6.4rem); line-height: .95; letter-spacing: -0.02em;
 }
 .work-intro__title em { color: var(--accent); }
-.work-intro__lede { max-width: 60ch; margin-top: 28px; font-size: 1.15rem; color: var(--muted); }
-.work-intro__actions { margin-top: 28px; }
-.facts {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 48px; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--line);
+/* Same two columns as the sections below: facts in the label column, the story in the body */
+.work-intro__grid {
+  display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: 28px clamp(32px, 6vw, 80px);
+  margin-top: clamp(40px, 5vw, 64px); padding-top: 22px; border-top: 1.5px solid var(--ink);
 }
-.facts > div { padding: 14px 16px 16px 0; }
-.facts > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.work-intro__grid .facts { grid-column: 1; grid-row: 1; }
+.work-intro__body { grid-column: 2; min-width: 0; }
+.work-intro__lede { max-width: 58ch; font-size: 1.15rem; color: var(--muted); }
+.work-intro__lede p:first-child { color: var(--ink); }
+.work-intro__lede p + p { margin-top: 1em; }
+.work-intro__actions { margin-top: 28px; }
+.facts > div { padding: 12px 0; border-top: 1px solid var(--line); }
+.facts > div:first-child { padding-top: 0; border-top: 0; }
 .facts dt { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .facts dd { margin-top: 4px; font-size: .98rem; }
 
@@ -327,9 +331,11 @@ html:not(.is-draft) [data-todo] { display: none !important; }
 @media (max-width: 900px) {
   .section { grid-template-columns: 1fr; }
   .section__head { position: static; margin-bottom: 12px; }
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .facts > div:nth-child(3) { padding-left: 0; border-left: 0; }
-  .facts > div:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  /* Story first, then the facts as a 2 × 2 block underneath */
+  .work-intro__grid { grid-template-columns: 1fr; }
+  .work-intro__grid .facts, .work-intro__body { grid-column: auto; grid-row: auto; }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; border-bottom: 1px solid var(--line); }
+  .facts > div, .facts > div:first-child { padding: 14px 0; border-top: 1px solid var(--line); }
 }
 
 @media (max-width: 760px) {
@@ -429,9 +435,8 @@ html:not(.is-draft) [data-todo] { display: none !important; }
 
   /* Work intro */
   .work-intro { padding-top: 28px; }
-  .work-intro__kicker { margin-bottom: 16px; }
   .work-intro__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); line-height: .98; }
-  .work-intro__lede { margin-top: 20px; }
+  .work-intro__grid { margin-top: 28px; padding-top: 20px; }
 
   .projects { grid-template-columns: 1fr; }
   .project { padding: 20px; }
@@ -451,7 +456,6 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .text-link { margin-top: 16px; }
   .project__links { gap: 22px; margin-bottom: -10px; }
   .site-footer a { display: inline-block; padding: 8px 0; }
-  .work-intro__kicker a { display: inline-block; padding: 6px 0; }
 
   .contact__lede { margin: 20px auto 24px; }
   .draft-badge { font-size: .65rem; padding: 4px 10px; }
@@ -468,12 +472,11 @@ html:not(.is-draft) [data-todo] { display: none !important; }
 
 /* Small phones: facts read better as a single list */
 @media (max-width: 480px) {
-  .facts { grid-template-columns: 1fr; margin-top: 36px; }
-  .facts > div, .facts > div + div {
+  .facts { grid-template-columns: 1fr; }
+  .facts > div, .facts > div:first-child {
     display: grid; grid-template-columns: 6.5rem 1fr; gap: 12px; align-items: baseline;
-    padding: 11px 0; border-left: 0;
+    padding: 11px 0;
   }
-  .facts > div + div { border-top: 1px solid var(--line); }
   .facts dd { margin-top: 0; }
   .work-intro__lede { font-size: 1.05rem; }
   .project--featured .project__title { font-size: 1.7rem; }
