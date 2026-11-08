@@ -1,170 +1,166 @@
-// Ensure page loads at the top
-if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
-}
+/* ==========================================================================
+   script.js: renders content.js into the page and handles small interactions.
+   You shouldn't need to edit this to change what the site says.
+   ========================================================================== */
+(function () {
+  const root = document.documentElement;
+  const SITE = window.SITE || {};
 
-window.addEventListener('beforeunload', function() {
-    window.scrollTo(0, 0);
-});
+  /* ---------- Draft mode ----------
+     Placeholders (todo items) only show on a local preview or with ?draft. */
+  const host = location.hostname;
+  const DRAFT =
+    location.protocol === "file:" ||
+    host === "localhost" || host === "127.0.0.1" || host === "" ||
+    new URLSearchParams(location.search).has("draft");
+  if (DRAFT) {
+    root.classList.add("is-draft");
+    const badge = document.createElement("p");
+    badge.className = "draft-badge";
+    badge.textContent = "Draft view · placeholders in amber are hidden on the live site";
+    document.body.appendChild(badge);
+  }
+  const keep = (item) => DRAFT || !(item && item.todo);
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Scroll to top on page load
-    window.scrollTo(0, 0);
-
-    // --- CONFIGURATION ---
-
-    // 1. Social Media Links Configuration
-    const socialLinks = [
-        {
-            name: 'GitHub',
-            url: 'https://github.com/habeebullahtabrez',
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`
-        },
-        {
-            name: 'LinkedIn',
-            url: 'https://linkedin.com/in/theopcoder',
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`
-        },
-        {
-            name: 'Twitter',
-            url: 'https://x.com/TheOpCoder',
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>`
-        },
-        // Youtube
-        {
-            name: 'YouTube',
-            url: 'https://www.youtube.com/@TheOpCoder',
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 11.75a29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>`
-        },
-    ];
-
-    // 2. Projects Configuration
-    const projects = [
-        {
-            title: 'WinningSon-inator',
-            description: 'A web app where users can log their daily wins and create a knowledge base of their contributions over time. Also helps them setup goals and analyze their progress using AI.',
-            tech: ['Go', 'React.js', 'PostgreSQL'],
-            githubUrl: null, // Optional
-            demoUrl: 'https://www.winningsoninator.com' // Optional: Replace with live demo URL
-        },
-        {
-            title: 'E-Commerce Store',
-            description: 'An e-commerce platform built from the ground up, featuring user authentication, product listings, and a complete shopping cart flow.',
-            tech: ['Node.js', 'Express.js', 'MongoDB'],
-            githubUrl: 'https://github.com/habeebullahtabrez/e-commerce', // Optional
-            demoUrl: null // Optional: Replace with live demo URL
-        },
-        {
-            title: 'Chatrooms App',
-            description: 'A real-time chat application that supports multiple rooms and live communication between users, built with WebSockets.',
-            tech: ['Node.js', 'Socket.io', 'React.js', 'HarperDB'],
-            githubUrl: 'https://github.com/habeebullahtabrez/chat-app', // Optional
-            demoUrl: null // No live demo for this one
-        },
-        {
-            title: 'Meetup Organizer',
-            description: 'An event management application that allows users to create, publish, and manage online events, using a real-time database for live updates.',
-            tech: ['JavaScript', 'Svelte.js', 'Firebase'],
-            githubUrl: 'https://github.com/habeebullahtabrez/meetup-organizer', // Optional
-            demoUrl: null // Optional: Replace with live demo URL
-        },
-        {
-            title: 'Wave Portal (dApp)',
-            description: 'A decentralized application (dApp) demonstrating the basic functionalities of the Ethereum Blockchain, allowing users to interact with a smart contract.',
-            tech: ['Solidity', 'React.js', 'Ethereum', 'Hardhat'],
-            githubUrl: 'https://github.com/habeebullahtabrez/wave-portal', // Optional
-            demoUrl: null
-        }
-    ];
-
-
-    // --- DYNAMIC CONTENT GENERATION ---
-
-    // Generate Social Links in Footer
-    const socialContainer = document.getElementById('footer-social-links');
-    if (socialContainer) {
-        socialLinks.forEach(link => {
-            const a = document.createElement('a');
-            a.href = link.url;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.title = link.name;
-            a.innerHTML = link.icon;
-            socialContainer.appendChild(a);
-        });
+  /* ---------- Tiny DOM helper ---------- */
+  function el(tag, attrs, ...children) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue;
+      if (k === "class") node.className = v;
+      else if (k === "html") node.innerHTML = v;
+      else if (k === "text") node.textContent = v;
+      else node.setAttribute(k, v === true ? "" : v);
     }
+    children.flat().forEach((c) => c != null && node.append(c));
+    return node;
+  }
+  const asItem = (x) => (typeof x === "string" ? { text: x } : x);
+  const todoClass = (item, base) => [base, item.todo && "todo"].filter(Boolean).join(" ");
 
-    // Generate Project Cards
-    const projectsGrid = document.getElementById('projects-grid');
-    if (projectsGrid) {
-        projects.forEach(project => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
+  /* ---------- Renderers ---------- */
+  const renderers = {
+    nowUpdated: (node) => { node.textContent = SITE.nowUpdated || ""; },
 
-            let techList = project.tech.map(t => `<li>${t}</li>`).join('');
+    now: (node) => {
+      (SITE.now || []).filter(keep).forEach((item) => {
+        node.append(el("div", { class: todoClass(item, "now__item") },
+          el("dt", { text: item.label }),
+          el("dd", { html: item.html })));
+      });
+    },
 
-            let linksHtml = '';
-            if (project.githubUrl) {
-                linksHtml += `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" title="GitHub">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                              </a>`;
-            }
-            if (project.demoUrl) {
-                linksHtml += `<a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" title="Live Demo">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                              </a>`;
-            }
-
-            card.innerHTML = `
-                <div>
-                    <div class="project-header">
-                        <h3 class="project-title">${project.title}</h3>
-                        <div class="project-links">${linksHtml}</div>
-                    </div>
-                    <p class="project-description">${project.description}</p>
-                </div>
-                <ul class="project-tech-list">${techList}</ul>
-            `;
-            projectsGrid.appendChild(card);
+    gallery: (node) => {
+      (SITE.gallery || []).filter(keep).forEach((item, i) => {
+        const fig = el("figure", { class: todoClass(item, "gallery__item") });
+        const img = el("img", { src: item.src, alt: item.alt || "", loading: "lazy", decoding: "async" });
+        const cap = el("figcaption", null, el("span", { class: "mono", text: `fig. ${i + 2}` }), " ", item.caption);
+        img.addEventListener("error", () => {
+          if (DRAFT) {
+            fig.classList.add("is-missing");
+            fig.insertBefore(el("span", { class: "gallery__missing mono", text: item.src }), fig.firstChild);
+          } else {
+            fig.remove();
+            if (!node.children.length) hideSection(node);
+          }
         });
+        fig.append(img, cap);
+        node.append(fig);
+      });
+    },
+
+    likes: (node) => {
+      (SITE.likes || []).forEach((group) => {
+        const items = (group.items || []).map(asItem).filter(keep);
+        if (!items.length) return;
+        node.append(el("div", { class: "likes__group" },
+          el("h3", { text: group.title }),
+          el("ul", null, items.map((it) => el("li", { class: todoClass(it), text: it.text })))));
+      });
+    },
+
+    projects: (node) => {
+      (SITE.projects || []).filter(keep).forEach((p) => {
+        const links = el("p", { class: "project__links" },
+          p.demoUrl ? el("a", { href: p.demoUrl, target: "_blank", rel: "noopener", text: "Live ↗" }) : null,
+          p.githubUrl ? el("a", { href: p.githubUrl, target: "_blank", rel: "noopener", text: "Code ↗" }) : null);
+        node.append(el("article", { class: todoClass(p, p.featured ? "project project--featured" : "project") },
+          el("h3", { class: "project__title", text: p.title }),
+          el("p", { class: "project__desc", text: p.description }),
+          el("ul", { class: "project__tech", "aria-label": "Built with" }, (p.tech || []).map((t) => el("li", { text: t }))),
+          links));
+      });
+    },
+  };
+
+  /* Hide a section (and its nav link) when it ends up with nothing to show */
+  function hideSection(node) {
+    const section = node.closest("section");
+    if (!section) return;
+    section.hidden = true;
+    if (section.id) {
+      document.querySelectorAll(`.site-nav a[href="#${section.id}"]`).forEach((a) => (a.hidden = true));
     }
+  }
 
+  document.querySelectorAll("[data-render]").forEach((node) => {
+    const fn = renderers[node.dataset.render];
+    if (!fn) return;
+    fn(node);
+    if (node.dataset.render !== "nowUpdated" && !node.children.length) hideSection(node);
+  });
 
-    // --- INTERACTIVITY ---
-
-    // Mobile Menu Toggle
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('mainNav');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close menu when a link is clicked
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
+  /* ---------- Theme toggle: light (white) by default, dark on request ---------- */
+  const themeBtn = document.querySelector(".theme-toggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const syncTheme = () => {
+    const dark = root.dataset.theme === "dark";
+    if (themeBtn) {
+      themeBtn.setAttribute("aria-pressed", String(dark));
+      themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
     }
+    if (themeMeta) themeMeta.content = dark ? "#141312" : "#ffffff";
+  };
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+      syncTheme();
+    });
+  }
+  syncTheme();
 
-    // Hide Header on Scroll Down
-    let lastScrollTop = 0;
-    const header = document.getElementById('mainHeader');
-    if(header) {
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
-                // Scroll Down
-                header.style.top = '-80px';
-            } else {
-                // Scroll Up
-                header.style.top = '0';
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
-    }
-});
+  /* ---------- Mobile menu ---------- */
+  const menuBtn = document.querySelector(".menu-toggle");
+  const nav = document.getElementById("site-nav");
+  if (menuBtn && nav) {
+    const setOpen = (open) => {
+      nav.classList.toggle("is-open", open);
+      menuBtn.setAttribute("aria-expanded", String(open));
+      menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    menuBtn.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
+    nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  }
+
+  /* ---------- Header border once scrolled ---------- */
+  const header = document.querySelector(".site-header");
+  if (header) {
+    const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 8);
+    addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- Fade sections in on scroll ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".section, .contact").forEach((s) => { s.classList.add("reveal"); io.observe(s); });
+  }
+
+  document.querySelectorAll("[data-year]").forEach((n) => (n.textContent = new Date().getFullYear()));
+})();
