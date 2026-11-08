@@ -311,10 +311,15 @@ main { counter-reset: section; }
 .approach h3 { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; line-height: 1.1; }
 .approach p { margin-top: 8px; color: var(--muted); }
 .stack { margin-top: 12px; padding-top: 16px; border-top: 1.5px solid var(--ink); }
-.stack span {
-  display: block; margin-bottom: 4px;
+.stack__label {
+  margin-bottom: 4px;
   font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
 }
+/* Desktop reads it as a sentence: "C#, .NET, …, AWS, and AI tools throughout." */
+.stack__list li { display: inline; }
+.stack__list li:not(:last-child)::after { content: ", "; }
+.stack__list li:last-child::before { content: "and "; }
+.stack__list li:last-child::after { content: " throughout."; }
 
 /* ==========================================================================
    Draft placeholders: hidden unless previewing (see script.js)
@@ -388,13 +393,30 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .now__item dt { font-size: .78rem; padding-top: 0; }
   .now__item dd { font-size: 1.05rem; line-height: 1.5; }
 
-  /* How I work: number in the margin, like the project list */
+  /* How I work: a serif numeral in the margin, like the definitions on the home page */
   .approach { grid-template-columns: 1fr; }
-  .approach li { position: relative; padding: 18px 0 20px 2.4rem; }
-  .approach li::before { position: absolute; left: 0; top: 25px; margin: 0; }
+  .approach li { position: relative; padding: 18px 0 20px 2rem; }
+  .approach li::before {
+    content: counter(step) ".";
+    position: absolute; left: 0; top: 18px; margin: 0;
+    font-family: var(--serif); font-size: 1.45rem; line-height: 1.1; color: var(--accent);
+  }
   .approach h3 { font-size: 1.45rem; }
   .approach p { font-size: .95rem; }
+
+  /* Day to day: chips instead of a sentence */
   .stack { margin-top: 4px; }
+  .stack__label { margin-bottom: 12px; }
+  .stack__list { display: flex; flex-wrap: wrap; gap: 8px 6px; }
+  .stack__list li {
+    display: block; padding: 5px 12px;
+    border: 1px solid var(--line); border-radius: 999px;
+    font-size: .88rem; line-height: 1.4;
+  }
+  .stack__list li:last-child::before, .stack__list li:not(:last-child)::after { content: none; }
+  /* AI is the through-line, so its chip carries the accent */
+  .stack__list li:last-child { background: var(--accent-soft); border-color: transparent; }
+  .stack__list li:last-child::after { content: " throughout"; color: var(--muted); }
   .job { grid-template-columns: 1fr; gap: 4px; padding: 22px 0; }
   .job__when { padding-top: 0; font-size: .78rem; }
 
@@ -435,32 +457,25 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .job__when { color: var(--accent); letter-spacing: .02em; }
   .job__title { margin-top: 2px; }
 
-  /* Projects: the featured one stays a card; the rest become a plain ruled list
-     (unnumbered: there's no order or ranking to imply) */
-  .projects { gap: 0; }
-  .project--featured { margin-bottom: 12px; }
-  .project:not(.project--featured) {
-    position: relative;
-    padding: 20px 0; gap: 6px;
-    background: none; border: 0; border-radius: 0; border-top: 1px solid var(--line);
+  /* Projects: a swipeable strip of cards that bleeds to the screen edges, the
+     same as the photos on the home page. The featured one leads, in the accent tint;
+     each card leaves the next one peeking in so it's clear the strip scrolls. */
+  .projects {
+    display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter);
+    margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) 6px;
+    scrollbar-width: none;
   }
-  .project:not(.project--featured):last-child { border-bottom: 1px solid var(--line); }
-  .project:not(.project--featured) .project__title { font-size: 1.45rem; padding-right: 4.5rem; }
-  .project:not(.project--featured) .project__links { position: absolute; top: 14px; right: 0; margin: 0; }
-  .project:not(.project--featured) .project__desc { font-size: .95rem; }
-  .project:not(.project--featured) .project__tech { gap: 0; padding-top: 2px; }
-  .project:not(.project--featured) .project__tech li { padding: 0; border: 0; font-size: .75rem; }
-  .project:not(.project--featured) .project__tech li + li::before { content: "·"; margin: 0 7px; color: var(--line); }
-  .is-draft .project.todo:not(.project--featured) { border-style: dashed; border-width: 1px 0 0; }
+  .projects::-webkit-scrollbar { display: none; }
+  .project { flex: 0 0 min(80%, 320px); scroll-snap-align: start; padding: 22px 20px; gap: 10px; }
+  .project__title, .project--featured .project__title { font-size: 1.6rem; }
+  .project__desc { font-size: .95rem; line-height: 1.55; }
 
   /* Work intro */
   .work-intro { padding-top: 28px; }
   .work-intro__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); line-height: .98; }
   .work-intro__grid { margin-top: 28px; padding-top: 20px; }
 
-  .projects { grid-template-columns: 1fr; }
-  .project { padding: 20px; }
-  .project--featured .project__title { font-size: 1.9rem; }
   .job__title { font-size: 1.55rem; }
   .site-footer { flex-direction: column; }
 
@@ -586,25 +601,31 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .work-intro::after { flex: 1.15 1 0; }
   .work-intro__grid { margin-top: 24px; gap: 24px; }
 
-  /* Facts keep one row each (see the 480px block); no closing rule, since
-     the next section brings its own */
-  .facts { border-bottom: 0; }
+  /* Facts as a tinted 2 × 2 block of tiles (the 1px gap shows the line colour
+     through as hairlines between them) */
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .facts > div, .facts > div:first-child { padding: 12px 14px 14px; border: 0; background: var(--surface); }
+  .facts dt { font-size: .68rem; }
+  .facts dd { margin-top: 3px; font-size: .95rem; line-height: 1.35; }
+  /* A small live dot on the status */
+  .facts__status dd::before {
+    content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 7px;
+    border-radius: 50%; background: var(--accent); vertical-align: .12em;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
 
   /* Experience bullets match the project and approach descriptions */
   .job__points { gap: 10px; }
   .job__points li { font-size: .95rem; line-height: 1.55; padding-left: 18px; text-wrap: pretty; }
 }
 
-/* Small phones: facts read better as a single list */
+/* Small phones */
 @media (max-width: 480px) {
-  .facts { grid-template-columns: 1fr; }
-  .facts > div, .facts > div:first-child {
-    display: grid; grid-template-columns: 6.5rem 1fr; gap: 12px; align-items: baseline;
-    padding: 11px 0;
-  }
-  .facts dd { margin-top: 0; }
   .work-intro__lede { font-size: 1.05rem; }
-  .project--featured .project__title { font-size: 1.7rem; }
 }
 
 /* Touch screens: no sticky hover states, no grey tap flash */
