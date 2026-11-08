@@ -382,10 +382,11 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .section__head { margin-bottom: 22px; }
   .section__title { font-size: 2.35rem; }
 
-  /* Label/value lists keep their two columns, like a glossary */
-  .now__item { grid-template-columns: 5.75rem 1fr; gap: 4px 16px; }
-  .now__item dt { font-size: .74rem; padding-top: .35em; }
-  .now__item dd { font-size: 1.02rem; line-height: 1.5; }
+  /* Label above its value, the same as "More about me", so the text gets the
+     full width instead of wrapping in a narrow column */
+  .now__item { grid-template-columns: 1fr; gap: 4px; padding: 14px 0 16px; }
+  .now__item dt { font-size: .78rem; padding-top: 0; }
+  .now__item dd { font-size: 1.05rem; line-height: 1.5; }
 
   /* How I work: number in the margin, like the project list */
   .approach { grid-template-columns: 1fr; }
@@ -410,10 +411,12 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   #gallery .text-link { margin-top: 12px; }
 
   .about__row { grid-template-columns: 1fr; padding: 14px 0 18px; }
+  /* The section's own rule follows straight after, so drop the last one */
+  .about__row:last-child { border-bottom: 0; padding-bottom: 0; }
   .terms { font-size: 1.3rem; }
 
-  /* Contact */
-  .contact { padding: 72px 0 64px; }
+  /* Contact: left-aligned like every other block on the page */
+  .contact { padding: 56px 0 56px; text-align: left; }
   .contact__title { font-size: 4.5rem; }
   .contact--compact .contact__title { font-size: 4rem; }
   .contact__email { font-size: 1.3rem; }
@@ -470,15 +473,20 @@ html:not(.is-draft) [data-todo] { display: none !important; }
   .entry__meta::before { content: ""; flex-basis: 100%; order: 1; }
   .entry__meta > span:nth-child(n + 3) { order: 2; }
 
-  /* Bigger tap targets (~44px) without changing the look */
-  .socials { gap: 0 18px; margin-top: 28px; }
-  .socials a { display: inline-block; padding: 12px 2px; }
+  /* Socials become pill buttons: clear, thumb-sized tap targets */
+  .socials { justify-content: flex-start; gap: 10px 8px; margin-top: 32px; font-size: .9rem; }
+  .socials a {
+    display: inline-block; padding: 10px 16px;
+    border: 1px solid var(--line); border-radius: 999px;
+    color: var(--ink); text-decoration: none;
+  }
+  .socials a::after { content: " ↗"; color: var(--muted); }
   .text-link, .project__links a { display: inline-block; padding: 10px 0; }
   .text-link { margin-top: 16px; }
   .project__links { gap: 22px; margin-bottom: -10px; }
   .site-footer a { display: inline-block; padding: 8px 0; }
 
-  .contact__lede { margin: 20px auto 24px; }
+  .contact__lede { margin: 20px 0 24px; }
   .draft-badge { font-size: .65rem; padding: 4px 10px; }
   .is-draft:not(.no-badge) body { padding-bottom: 48px; }
 }
@@ -550,6 +558,12 @@ html:not(.is-draft) [data-todo] { display: none !important; }
     margin-top: 0; padding-top: 40px; gap: 16px;
     border-top: 1px solid var(--line);
   }
+  /* Below the fold the definitions need a heading, like every section after them */
+  .entry__senses::before {
+    content: "Definitions";
+    font-size: .78rem; font-weight: 500; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--muted);
+  }
 }
 
 /* Tall phones: spend some of the extra height on a bigger portrait */
@@ -585,4 +599,8 @@ html { -webkit-tap-highlight-color: transparent; }
   .project:hover { border-color: var(--line); }
   .project--featured:hover { border-color: transparent; }
   .icon-btn:hover { border-color: var(--line); }
+}
+/* Phones show the socials as ink pills, so keep them ink after a tap */
+@media (hover: none) and (max-width: 760px) {
+  .socials a:hover { color: var(--ink); }
 }
