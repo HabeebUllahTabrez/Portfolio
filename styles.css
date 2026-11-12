@@ -29,15 +29,15 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #141312;
-  --surface: #1c1b19;
-  --ink: #f2efea;
-  --muted: #a29e97;
-  --line: #2c2a27;
-  --accent: #f08a5d;
-  --accent-soft: #2e1d14;
+  --bg: #121212;
+  --surface: #1b1b1b;
+  --ink: #ededeb;
+  --muted: #a0a09c;
+  --line: #2b2b2a;
+  --accent: #f2753d;
+  --accent-soft: #2b1b13;
   --todo: #f0b25a;
-  --todo-soft: #2e2414;
+  --todo-soft: #2b2214;
   color-scheme: dark;
 }
 
