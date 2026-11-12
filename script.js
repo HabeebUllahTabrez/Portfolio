@@ -129,7 +129,7 @@
       themeBtn.setAttribute("aria-pressed", String(dark));
       themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
     }
-    if (themeMeta) themeMeta.content = dark ? "#141312" : "#ffffff";
+    if (themeMeta) themeMeta.content = dark ? "#121212" : "#ffffff";
   };
   if (themeBtn) {
     themeBtn.addEventListener("click", () => {
